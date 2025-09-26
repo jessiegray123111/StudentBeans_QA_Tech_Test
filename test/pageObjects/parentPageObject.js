@@ -1,10 +1,26 @@
-const { assert } = require('chai')
+const { assert } = require('chai');
 
-export default class ParentPageObject {
+class ParentPageObject {
   async isElementEqualToExpected(element, expectedText) {
-    const elementText = await element.getText()
-    if (elementText !== xpectedText) {
-      throw new Error(`Expected text "${expectedText}" but found "${elementText}"`)
+    const elementText = await element.getText();
+    assert.strictEqual(
+      elementText,
+      expectedText,
+      `Expected text "${expectedText}" but found "${elementText}"`
+    );
+  }
+
+  get cookieAcceptButton() {
+    return $('#onetrust-accept-btn-handler');
+  }
+
+  async acceptCookiesIfPresent() {
+    const btn = await this.cookieAcceptButton;
+    if (await btn.isExisting()) {
+      await btn.click();
     }
   }
 }
+
+module.exports = ParentPageObject;
+  
